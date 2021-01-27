@@ -11,9 +11,12 @@ using namespace std;
 
 int main()
 {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
 	int M, N; //M에서 N으로 가야하는문제
-	int visited[100001] = {}; //위치 i에 몇초만에 최단시간으로 도달했는지 저장해주는배열
-	deque <int> checker; 
+	int visited[200001] = {}; //도착했을 때 해당위치까지 가는데 걸린 최소 이동횟수
+	bool vis[200001] = {};	  //해당 위치를 방문했는가에 대한 여부 저장
+	deque <int> checker;
 	//BFS방법을 이용하여 문제를 풀고자한다. 주어진위치값을 pop_front()해주고,
 	//그 위치에서 +1 / -1 / *2한 위치로 이동한것을 checker에 push_back해준다.
 	cin >> M >> N;
@@ -33,65 +36,32 @@ int main()
 		}
 		else
 		{
-			//현재 위치가 목표값보다 뒤에 있다면
-			if (temp > N)
+			//사실상 이번 알고리즘은 BFS를 사용하기는 하는데 0-1 BFS 알고리즘을 사용한다고 한다
+			//BFS탐색과 동시에 탐색이 완료된 곳에 대한 조치를 취한다는 것
+			//다만 그것을 사용하지 않고 deque 자료구조 사용 및 deque에 자료값 넣는 순서를 
+			//소요시간이 0인 순간이동부터 넣는것으로 정하고 풀면 답이 나오긴 한다
+			if ((temp * 2 <= 100000) && (visited[temp * 2] == 0) && (vis[temp * 2] == false))
 			{
-				//목표값으로 가기위해선 현재위치에서 -1하는 행동밖에 못한다.
-				if (visited[temp - 1] == 0)//방문한 적이 없는 위치라면
-				{
-					visited[temp - 1] = visited[temp] + 1;
-					checker.push_back(temp - 1);
-					//최초 도착시간을 visited배열에 저장해주고, 그 위치를 checker에 push_back
-				}
-				else if (visited[temp - 1] > visited[temp] + 1)//방문한 적이 있는 위치이지만 이동하는데 걸린 시간이 최단으로 단축된다면
-				{
-					visited[temp - 1] = visited[temp] + 1;
-					checker.push_back(temp - 1);
-					//최단 도착시간을 visited배열에 저장해주고, 그 위치를 checker에 push_back
-				}
+				visited[temp * 2] = visited[temp];
+				vis[temp * 2] = true;
+				checker.push_back(temp * 2);
 			}
-			//현재 위치가 목표값보다 앞에 있다면
-			else if (temp < N)
+
+			if ((temp - 1 >= 0) && (visited[temp - 1] == 0) && (vis[temp - 1] == false))
 			{
-				//if문을 돌려주는 순서는 *2일때가 먼저, 그 다음 +1과 -1은 뒤에 알아서 오면 된다.
-				//*2일때 0초가 걸린다는점에서 BFS가 가지고있는 가중치와 연관되어있는것으로 추정된다.
-				//각각의 2개의 if문으로 이루어진 3쌍의 if ~ else if문은 위와같은 규칙과 같은 원리로 작동한다.
-				if ((temp * 2 <= 100000) && (visited[temp * 2] == 0))
-				{
-					visited[temp * 2] = visited[temp];
-					checker.push_back(temp * 2);
-				}
-				else if ((temp * 2 <= 100000) && (visited[temp * 2] > visited[temp] + 1))
-				{
-					visited[temp * 2] = visited[temp];
-					checker.push_back(temp * 2);
-				}
-
-				if (visited[temp + 1] == 0)
-				{
-					visited[temp + 1] = visited[temp] + 1;
-					checker.push_back(temp + 1);
-				}
-				else if (visited[temp + 1] > visited[temp] + 1)
-				{
-					visited[temp + 1] = visited[temp] + 1;
-					checker.push_back(temp + 1);
-				}
-
-				if ((temp - 1 != -1) && (visited[temp - 1] == 0))
-				{
-					visited[temp - 1] = visited[temp] + 1;
-					checker.push_back(temp - 1);
-				}
-				else if ((temp - 1 != -1) && (visited[temp - 1] > visited[temp] + 1))
-				{
-					visited[temp - 1] = visited[temp] + 1;
-					checker.push_back(temp - 1);
-				}
+				visited[temp - 1] = visited[temp] + 1;
+				vis[temp - 1] = true;
+				checker.push_back(temp - 1);
 			}
+
+			if (visited[temp + 1] == 0 && (vis[temp + 1] == false))
+			{
+				visited[temp + 1] = visited[temp] + 1;
+				vis[temp + 1] = true;
+				checker.push_back(temp + 1);
+			}
+			checker.pop_front();
 		}
-		checker.pop_front();
-		//위치탐색에 사용했었던 checker.front()의 값 제거.
 	}
 	cout << visited[N] << endl;
 	return 0;
