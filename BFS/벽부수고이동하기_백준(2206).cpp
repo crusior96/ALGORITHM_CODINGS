@@ -1,28 +1,28 @@
 #include<iostream>
 #include<queue>
 
-//ÃÖ´ë 1000 * 1000ÀÇ Å©±âÀÎ M * NÀÇ Áöµµ¿¡ Áö³ª°¥ ¼ö ÀÖ´Â °÷Àº 0, Áö³ª°¥ ¼ö ¾ø´Â °÷Àº 1·Î Ç¥±âµÇ¾îÀÖ´Ù
-//¿ÞÂÊ ÃÖ»ó´Ü°ú ¿À¸¥ÂÊ ÃÖÇÏ´ÜÀº Ç×»ó 0ÀÌ°í ¿ÞÂÊ ÃÖ»ó´Ü¿¡¼­ ¿À¸¥ÂÊ ÃÖÇÏ´ÜÀ¸·Î ÀÌµ¿ÇÏ°íÀÚ ÇÑ´Ù
-//ÆíÀÇ»ó º®À» 1È¸±îÁö´Â µ¹ÆÄ °¡´ÉÇÏ¸ç, ¿©·¯ °æ¿ì¸¦ µûÁ®¼­ ÃÖ¼Ò È½¼ö·Î ÀÌµ¿ÇÏ´Â °Å¸®¸¦ ±¸ÇÏ¿©¶ó
-//´Ü, ÀÌµ¿ÇÏÁö ¸ø ÇÏ´Â °æ¿ì¿¡´Â -1À» Ãâ·ÂÇÏ¸é µÈ´Ù
+//ìµœëŒ€ 1000 * 1000ì˜ í¬ê¸°ì¸ M * Nì˜ ì§€ë„ì— ì§€ë‚˜ê°ˆ ìˆ˜ ìžˆëŠ” ê³³ì€ 0, ì§€ë‚˜ê°ˆ ìˆ˜ ì—†ëŠ” ê³³ì€ 1ë¡œ í‘œê¸°ë˜ì–´ìžˆë‹¤
+//ì™¼ìª½ ìµœìƒë‹¨ê³¼ ì˜¤ë¥¸ìª½ ìµœí•˜ë‹¨ì€ í•­ìƒ 0ì´ê³  ì™¼ìª½ ìµœìƒë‹¨ì—ì„œ ì˜¤ë¥¸ìª½ ìµœí•˜ë‹¨ìœ¼ë¡œ ì´ë™í•˜ê³ ìž í•œë‹¤
+//íŽ¸ì˜ìƒ ë²½ì„ 1íšŒê¹Œì§€ëŠ” ëŒíŒŒ ê°€ëŠ¥í•˜ë©°, ì—¬ëŸ¬ ê²½ìš°ë¥¼ ë”°ì ¸ì„œ ìµœì†Œ íšŸìˆ˜ë¡œ ì´ë™í•˜ëŠ” ê±°ë¦¬ë¥¼ êµ¬í•˜ì—¬ë¼
+//ë‹¨, ì´ë™í•˜ì§€ ëª» í•˜ëŠ” ê²½ìš°ì—ëŠ” -1ì„ ì¶œë ¥í•˜ë©´ ëœë‹¤
 
 
 
 using namespace std;
 int M, N;
 char arr[1001][1001] = {};
-int dist[1001][1001][2] = {};	//°Å¸®°¡ ÀúÀåµÇ¾îÁö´Â °÷. º®À» ¶Õ¾úÀ» °æ¿ì, [x][y][0]ÀÌ ¾Æ´Ñ [x][y][1]¿¡ ÀúÀåµÇ¾îÁø´Ù
+int dist[1001][1001][2] = {};	//ê±°ë¦¬ê°€ ì €ìž¥ë˜ì–´ì§€ëŠ” ê³³. ë²½ì„ ëš«ì—ˆì„ ê²½ìš°, [x][y][0]ì´ ì•„ë‹Œ [x][y][1]ì— ì €ìž¥ë˜ì–´ì§„ë‹¤
 int dx[4] = { 0, 1, 0, -1 };
 int dy[4] = { 1, 0, -1, 0 };
 
 struct map {
 	int x, y, z;
-	//Å¥ ÀÚ·á±¸Á¶¿¡ 3°³ÀÇ Á¤¼ö¸¦ ÀÔ·ÂÇÏ±â À§ÇØ ÀÓ½Ã·Î ¸¸µç ±¸Á¶Ã¼
-	//°¢°¢ xÃà, yÃàÁÂÇ¥ ±×¸®°í º®ÀÇ µ¹ÆÄ À¯¹«¸¦ ÀúÀåÇÑ´Ù
+	//í ìžë£Œêµ¬ì¡°ì— 3ê°œì˜ ì •ìˆ˜ë¥¼ ìž…ë ¥í•˜ê¸° ìœ„í•´ ìž„ì‹œë¡œ ë§Œë“  êµ¬ì¡°ì²´
+	//ê°ê° xì¶•, yì¶•ì¢Œí‘œ ê·¸ë¦¬ê³  ë²½ì˜ ëŒíŒŒ ìœ ë¬´ë¥¼ ì €ìž¥í•œë‹¤
 };
 
 int bfs() {
-	//O(MN)ÀÇ ½Ã°£º¹Àâµµ¸¦ °¡Áø´Ù
+	//O(MN)ì˜ ì‹œê°„ë³µìž¡ë„ë¥¼ ê°€ì§„ë‹¤
 	queue<map> q;
 	q.push({ 0,0,0 });
 	dist[0][0][0] = 1;
@@ -31,7 +31,7 @@ int bfs() {
 		int temp_y = q.front().y;
 		int temp_z = q.front().z;
 		q.pop();
-		//¸ñÇ¥ÁöÁ¡¿¡ µµ´ÞÇÏ¸é dist°ª Ãâ·Â
+		//ëª©í‘œì§€ì ì— ë„ë‹¬í•˜ë©´ distê°’ ì¶œë ¥
 		if (temp_x == M - 1 && temp_y == N - 1) {
 			return dist[temp_x][temp_y][temp_z];
 		}
@@ -39,20 +39,20 @@ int bfs() {
 		for (int i = 0;i < 4;i++) {
 			int temp_dx = temp_x + dx[i];
 			int temp_dy = temp_y + dy[i];
-			//xÃà°ú yÃà µÑ Áß ¾Æ¹«°Å³ª mapÀÇ ¹üÀ§ÃÊ°ú½Ã Á¦¿Ü
+			//xì¶•ê³¼ yì¶• ë‘˜ ì¤‘ ì•„ë¬´ê±°ë‚˜ mapì˜ ë²”ìœ„ì´ˆê³¼ì‹œ ì œì™¸
 			if (temp_dx < 0 || temp_dx >= M && temp_dy < 0 && temp_dy >= N) {
 				continue;
 			}
-			//ÀÌ¹Ì °ªÀÌ ÀÔ·ÂµÇ¾î ÀÖ´Â °÷ÀÌ¸é °è»êºÒÇÊ¿ä
+			//ì´ë¯¸ ê°’ì´ ìž…ë ¥ë˜ì–´ ìžˆëŠ” ê³³ì´ë©´ ê³„ì‚°ë¶ˆí•„ìš”
 			if (dist[temp_dx][temp_dy][temp_z]) {
 				continue;
 			}
-			//Áö³ª°¥ ¼ö ÀÖ´Â ±æÀÌ¶ó¸é
+			//ì§€ë‚˜ê°ˆ ìˆ˜ ìžˆëŠ” ê¸¸ì´ë¼ë©´
 			if (arr[temp_dx][temp_dy] == '0') {
 				dist[temp_dx][temp_dy][temp_z] = dist[temp_x][temp_y][temp_z] + 1;
 				q.push({ temp_dx, temp_dy, temp_z });
 			}
-			//Áö³ª°¥ ¼ö ¾øÁö¸¸ º®À» µ¹ÆÄÇÑ ÀûÀÌ ¾ø´Ù¸é
+			//ì§€ë‚˜ê°ˆ ìˆ˜ ì—†ì§€ë§Œ ë²½ì„ ëŒíŒŒí•œ ì ì´ ì—†ë‹¤ë©´
 			if (arr[temp_dx][temp_dy] == '1' && temp_z == 0) {
 				dist[temp_dx][temp_dy][1] = dist[temp_x][temp_y][temp_z] + 1;
 				q.push({ temp_dx,temp_dy,1 });
