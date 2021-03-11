@@ -4,14 +4,14 @@ using namespace std;
 vector<int> friends[2002];
 int possible = 0;
 
-//A¿Í B°¡ ¾Ë°í, B¿Í C°¡ ¾Ë°í, C¿Í D°¡ ¾Ë°í, D¿Í E°¡ ¾Æ´Â »óÈ²À» Ã£°íÀÚ ÇÑ´Ù
-//N¸íÀÇ »ç¶÷°ú M¸íÀÇ ÀÎ¹°°ü°è°¡ ÁÖ¾îÁö°Ô µÉ °æ¿ì
-//ÇØ´ç °ü°è°¡ ÀÖ´Ù¸é 1, ¾Æ´Ï¸é 0À» Ãâ·ÂÇÏ¶ó
+//Aì™€ Bê°€ ì•Œê³ , Bì™€ Cê°€ ì•Œê³ , Cì™€ Dê°€ ì•Œê³ , Dì™€ Eê°€ ì•„ëŠ” ìƒí™©ì„ ì°¾ê³ ìž í•œë‹¤
+//Nëª…ì˜ ì‚¬ëžŒê³¼ Mëª…ì˜ ì¸ë¬¼ê´€ê³„ê°€ ì£¼ì–´ì§€ê²Œ ë  ê²½ìš°
+//í•´ë‹¹ ê´€ê³„ê°€ ìžˆë‹¤ë©´ 1, ì•„ë‹ˆë©´ 0ì„ ì¶œë ¥í•˜ë¼
 
 
-//dfs°¡ ÁøÇàµÇ´Â ÇÔ¼ö. °¢ »ç¶÷º°·Î °ü°è°¡ ÀÖ´Â »ç¶÷µéÀ» Ã£¾Æ ÁøÇàÇÑ´Ù
-//º¯¼ö´Â °¢°¢ °ü°è°¡ ½ÃÀÛµÇ´Â ¹øÈ£, ÇöÀç °ü°è Å½»öÁßÀÎ ¹øÈ£, ´©ÀûµÈ °ü°è ¼ö, °ü°è Ã¼Å© ¿©ºÎ°¡ ÀúÀåµÈ ¹è¿­ÀÌ´Ù
-//tmp : ÇöÀç±îÁö ¿¬°èµÈ °ü°èÀÇ ¼ö¸¦ ÀÇ¹ÌÇÑ´Ù. 4¹ø °ü°è°¡ µÇ¸é ÀÛ¾÷À» Áß´ÜÇÏ°í 1À» Ãâ·ÂÇÏ°Ô ÇÑ´Ù
+//dfsê°€ ì§„í–‰ë˜ëŠ” í•¨ìˆ˜. ê° ì‚¬ëžŒë³„ë¡œ ê´€ê³„ê°€ ìžˆëŠ” ì‚¬ëžŒë“¤ì„ ì°¾ì•„ ì§„í–‰í•œë‹¤
+//ë³€ìˆ˜ëŠ” ê°ê° ê´€ê³„ê°€ ì‹œìž‘ë˜ëŠ” ë²ˆí˜¸, í˜„ìž¬ ê´€ê³„ íƒìƒ‰ì¤‘ì¸ ë²ˆí˜¸, ëˆ„ì ëœ ê´€ê³„ ìˆ˜, ê´€ê³„ ì²´í¬ ì—¬ë¶€ê°€ ì €ìž¥ëœ ë°°ì—´ì´ë‹¤
+//tmp : í˜„ìž¬ê¹Œì§€ ì—°ê³„ëœ ê´€ê³„ì˜ ìˆ˜ë¥¼ ì˜ë¯¸í•œë‹¤. 4ë²ˆ ê´€ê³„ê°€ ë˜ë©´ ìž‘ì—…ì„ ì¤‘ë‹¨í•˜ê³  1ì„ ì¶œë ¥í•˜ê²Œ í•œë‹¤
 void dfs(int start_idx, int now_idx, int stacks, int check[]) {
 	for (int i = 0;i < friends[now_idx].size();i++) {
 		if (check[friends[now_idx][i]] == 0) {
@@ -22,8 +22,8 @@ void dfs(int start_idx, int now_idx, int stacks, int check[]) {
 				break;
 			}
 			dfs(start_idx, friends[now_idx][i], tmp, check);
-			//dfsÁøÇà ÀÌÈÄ check[friends[now_idx][i]]¸¦ 0À¸·Î ¸¸µé¾î¾ß start_idx¿¡¼­ÀÇ Å½»öÀ» ÇÒ ¶§
-			//ÀÌ¹Ì start_idx¿¡¼­ ´Ù¸¥ ·çÆ®·Î ÁøÇàµÇ´Â Å½»öÀ¸·Î ³¢¾îµé¾î Áßº¹Å½»öÀ» ÇÏ°Ô µÇ´Â °æ¿ì¸¦ ¸·À» ¼ö ÀÖ´Ù
+			//dfsì§„í–‰ ì´í›„ check[friends[now_idx][i]]ë¥¼ 0ìœ¼ë¡œ ë§Œë“¤ì–´ì•¼ start_idxì—ì„œì˜ íƒìƒ‰ì„ í•  ë•Œ
+			//ì´ë¯¸ start_idxì—ì„œ ë‹¤ë¥¸ ë£¨íŠ¸ë¡œ ì§„í–‰ë˜ëŠ” íƒìƒ‰ìœ¼ë¡œ ë¼ì–´ë“¤ì–´ ì¤‘ë³µíƒìƒ‰ì„ í•˜ê²Œ ë˜ëŠ” ê²½ìš°ë¥¼ ë§‰ì„ ìˆ˜ ìžˆë‹¤
 			check[friends[now_idx][i]] = 0;
 			if (possible == 1) {
 				return;
