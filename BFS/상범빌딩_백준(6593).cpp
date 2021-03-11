@@ -4,11 +4,11 @@
 #include<memory.h>
 using namespace std;
 
-//x°³ÀÇ Ãþ°ú °¡·Î y, ¼¼·Î z·Î ÀÌ·ç¾îÁ® ÀÖ´Â ºôµùÀÌ ÀÖ´Ù°í °¡Á¤ÇÏÀÚ. 
-//ÇöÀç À§Ä¡¿¡¼­ ÀÌµ¿ ÇÒ ¼ö ÀÖ´Â °÷À¸·Î »ó, ÇÏ, ÁÂ, ¿ì, À­Ãþ, ¾Æ·§ÃþÀ¸·Î ÀÌµ¿ÇÒ ¼ö ÀÖÀ¸¸ç
-//ÀÌµ¿ÇÒ ¼ö ÀÖ´Â °÷Àº '.', ¾Æ´Ñ°÷Àº '#'À¸·Î ÀÌ·ç¾îÁ®ÀÖ´Ù.
-//S¿¡¼­ Ãâ¹ßÇÏ¿© E·Î Å»ÃâÇÏ´Â ÃÖ¼ÒÇÑÀÇ ÀÌµ¿°Å¸®¸¦ ±¸ÇÏ¿©¶ó.
-//´Ü, ÀÌµ¿ÇÒ ¼ö ÀÖ´Â ¹æ¹ýÀÌ ¾øÀ¸¸é -1À» Ãâ·ÂÇÑ´Ù
+//xê°œì˜ ì¸µê³¼ ê°€ë¡œ y, ì„¸ë¡œ zë¡œ ì´ë£¨ì–´ì ¸ ìžˆëŠ” ë¹Œë”©ì´ ìžˆë‹¤ê³  ê°€ì •í•˜ìž. 
+//í˜„ìž¬ ìœ„ì¹˜ì—ì„œ ì´ë™ í•  ìˆ˜ ìžˆëŠ” ê³³ìœ¼ë¡œ ìƒ, í•˜, ì¢Œ, ìš°, ìœ—ì¸µ, ì•„ëž«ì¸µìœ¼ë¡œ ì´ë™í•  ìˆ˜ ìžˆìœ¼ë©°
+//ì´ë™í•  ìˆ˜ ìžˆëŠ” ê³³ì€ '.', ì•„ë‹Œê³³ì€ '#'ìœ¼ë¡œ ì´ë£¨ì–´ì ¸ìžˆë‹¤.
+//Sì—ì„œ ì¶œë°œí•˜ì—¬ Eë¡œ íƒˆì¶œí•˜ëŠ” ìµœì†Œí•œì˜ ì´ë™ê±°ë¦¬ë¥¼ êµ¬í•˜ì—¬ë¼.
+//ë‹¨, ì´ë™í•  ìˆ˜ ìžˆëŠ” ë°©ë²•ì´ ì—†ìœ¼ë©´ -1ì„ ì¶œë ¥í•œë‹¤
 
 
 char miro[31][31][31] = {};
@@ -22,9 +22,9 @@ struct position {
 	int nx, ny, nz;
 };
 
-//BFS¸¦ »ç¿ëÇÑ ¹®Á¦Ç®ÀÌ
-//±âÁ¸°ú´Â ´Ù¸£°Ô 2°³¹æÇâÀÌ ´õ ´Ã¾î³µ´Ù´Â Â÷ÀÌ°¡ ÀÖÀ¸¸ç
-//Å»ÃâÁöÁ¡ÀÌ 1°³°¡ ¾Æ´Ï¶ó´Â Á¡°ú Ãâ¹ßÁöÁ¡ÀÌ °íÁ¤µÇ¾îÀÖÁö ¾Ê´Ù´Â Á¡ÀÌ Å« ¹Ý·Ê·Î ÀÛ¿ëÇÑ´Ù.
+//BFSë¥¼ ì‚¬ìš©í•œ ë¬¸ì œí’€ì´
+//ê¸°ì¡´ê³¼ëŠ” ë‹¤ë¥´ê²Œ 2ê°œë°©í–¥ì´ ë” ëŠ˜ì–´ë‚¬ë‹¤ëŠ” ì°¨ì´ê°€ ìžˆìœ¼ë©°
+//íƒˆì¶œì§€ì ì´ 1ê°œê°€ ì•„ë‹ˆë¼ëŠ” ì ê³¼ ì¶œë°œì§€ì ì´ ê³ ì •ë˜ì–´ìžˆì§€ ì•Šë‹¤ëŠ” ì ì´ í° ë°˜ë¡€ë¡œ ìž‘ìš©í•œë‹¤.
 int bfs(int tx,int ty,int tz) {
 	queue<position> q;
 	q.push({ tx,ty,tz });
@@ -51,7 +51,7 @@ int bfs(int tx,int ty,int tz) {
 				continue;
 			}
 
-			//ÀÌµ¿ ÇÒ ¼ö ÀÖ´Â Á¶°ÇÀº 1. ÀÌµ¿ÀÌ °¡´ÉÇÑ ºñ¾îÀÖ´Â°÷ 2. µµÂøÁöÁ¡
+			//ì´ë™ í•  ìˆ˜ ìžˆëŠ” ì¡°ê±´ì€ 1. ì´ë™ì´ ê°€ëŠ¥í•œ ë¹„ì–´ìžˆëŠ”ê³³ 2. ë„ì°©ì§€ì 
 			if (miro[temp_dx][temp_dy][temp_dz] == '.' || miro[temp_dx][temp_dy][temp_dz] == 'E') {
 				dist[temp_dx][temp_dy][temp_dz] = dist[temp_x][temp_y][temp_z] + 1;
 				q.push({ temp_dx,temp_dy,temp_dz });
@@ -64,9 +64,9 @@ int bfs(int tx,int ty,int tz) {
 int main() {
 	bool doit = true;
 	while (doit) {
-		//x, y, z°¡ 0, 0, 0ÀÏ¶§¿¡ Å×½ºÆ®ÄÉÀÌ½º¸¦ Á¾·áÇÑ´Ù
-		//±× Àü¿¡ dist¿Í miro¿¡ ÀÔ·ÂµÇ¾ú´ø µ¥ÀÌÅÍµéÀ» ²ÙÁØÈ÷ ÃÊ±âÈ­ ½ÃÄÑÁà¾ß ÇÑ´Ù.
-		//´Ü, ¹éÁØ¿¡ Á¦ÃâÇÒ ¶§¿£ Çì´õÆÄÀÏ·Î <memory.h>¸¦ Ãß°¡ÇØÁà¾ßÇÑ´Ù.
+		//x, y, zê°€ 0, 0, 0ì¼ë•Œì— í…ŒìŠ¤íŠ¸ì¼€ì´ìŠ¤ë¥¼ ì¢…ë£Œí•œë‹¤
+		//ê·¸ ì „ì— distì™€ miroì— ìž…ë ¥ë˜ì—ˆë˜ ë°ì´í„°ë“¤ì„ ê¾¸ì¤€ížˆ ì´ˆê¸°í™” ì‹œì¼œì¤˜ì•¼ í•œë‹¤.
+		//ë‹¨, ë°±ì¤€ì— ì œì¶œí•  ë•Œì—” í—¤ë”íŒŒì¼ë¡œ <memory.h>ë¥¼ ì¶”ê°€í•´ì¤˜ì•¼í•œë‹¤.
 		memset(dist, 0, sizeof(dist));
 		memset(miro, 0, sizeof(miro));
 		int px, py, pz;
@@ -88,7 +88,7 @@ int main() {
 		for (int i = 0;i < x;i++) {
 			for (int j = 0;j < y;j++) {
 				for (int k = 0;k < z;k++) {
-					//½ÃÀÛÁ¡À» Ã£¾Æ¼­ bfsÇÔ¼ö¿¡ Àü´ÞÇÑ´Ù
+					//ì‹œìž‘ì ì„ ì°¾ì•„ì„œ bfsí•¨ìˆ˜ì— ì „ë‹¬í•œë‹¤
 					if (miro[i][j][k] == 'S') {
 						px = i;
 						py = j;
