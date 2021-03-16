@@ -4,7 +4,7 @@
 #include<queue>
 using namespace std;
 typedef pair<int, long long> P;
-vector<P> adj[200001];				//ÀÎÁ¢ Çà·Ä³¢¸®ÀÇ Á¤º¸°¡ ÀúÀåµÈ´Ù. ½ÃÀÛÁöÁ¡ & µµÂøÁöÁ¡ & »çÀÌÀÇ °Å¸®°¡ ÀúÀåµÈ´Ù.
+vector<P> adj[200001];				//ì¸ì ‘ í–‰ë ¬ë¼ë¦¬ì˜ ì •ë³´ê°€ ì €ìž¥ëœë‹¤. ì‹œìž‘ì§€ì  & ë„ì°©ì§€ì  & ì‚¬ì´ì˜ ê±°ë¦¬ê°€ ì €ìž¥ëœë‹¤.
 long long height[100001] = {};
 long long Home_len[100001] = {};
 long long Camp_len[100001] = {};
@@ -12,14 +12,14 @@ bool visited[100001] = { 0 };
 long long sum[200001] = {};
 
 int N, lane, D, E;
-//°¢°¢ Áöµµ¿¡ Ç¥½ÃµÈ µµÂøÁöÁ¡ÀÇ °¹¼ö, ÁöÁ¡À» ÀÕ´Â °æ·ÎÀÇ °¹¼ö, °Å¸® ºñ·Ê Ã¼·Â ¼Ò¸ð·®, ³ôÀÌ ºñ·Ê ¼ºÃë°¨ È¹µæ·®À» ÀÇ¹ÌÇÑ´Ù
+//ê°ê° ì§€ë„ì— í‘œì‹œëœ ë„ì°©ì§€ì ì˜ ê°¯ìˆ˜, ì§€ì ì„ ìž‡ëŠ” ê²½ë¡œì˜ ê°¯ìˆ˜, ê±°ë¦¬ ë¹„ë¡€ ì²´ë ¥ ì†Œëª¨ëŸ‰, ë†’ì´ ë¹„ë¡€ ì„±ì·¨ê° íšë“ëŸ‰ì„ ì˜ë¯¸í•œë‹¤
 
-//µî»êÀ» ÇÏ·ÁÇÏ´Âµ¥ ½ÃÀÛÁ¡(1)¿¡¼­ ½ÃÀÛÇÏ¿© µµÂøÁöÁ¡(N)±îÁö ÀÌµ¿ÇÏ·ÁÇÑ´Ù
-//µî»êÀ» ÇÒ ¼ö ÀÖ´Â °æ·Î°¡ lane°³ ÁÖ¾îÁ®ÀÖÀ» ¶§ ¾òÀ» ¼ö ÀÖ´Â ÃÖ´ë ¼ºÃë°¨À» Ãâ·ÂÇÏ¶ó
-//Á¶°Ç¿¡ ¸ÂÃç¼­ ¼ºÃë°¨À» ¾òÀ» ¼ö ¾ø´Ù¸é Impossible Ãâ·Â
+//ë“±ì‚°ì„ í•˜ë ¤í•˜ëŠ”ë° ì‹œìž‘ì (1)ì—ì„œ ì‹œìž‘í•˜ì—¬ ë„ì°©ì§€ì (N)ê¹Œì§€ ì´ë™í•˜ë ¤í•œë‹¤
+//ë“±ì‚°ì„ í•  ìˆ˜ ìžˆëŠ” ê²½ë¡œê°€ laneê°œ ì£¼ì–´ì ¸ìžˆì„ ë•Œ ì–»ì„ ìˆ˜ ìžˆëŠ” ìµœëŒ€ ì„±ì·¨ê°ì„ ì¶œë ¥í•˜ë¼
+//ì¡°ê±´ì— ë§žì¶°ì„œ ì„±ì·¨ê°ì„ ì–»ì„ ìˆ˜ ì—†ë‹¤ë©´ Impossible ì¶œë ¥
 
-//¹®Á¦¿¡¼­ ¾²ÀÎ ´ÙÀÍ½ºÆ®¶ó ¾Ë°í¸®Áò
-//°Å¸® ºñ·Ê Ã¼·Â ¼Ò¸ð·®À» °í·ÁÇØ¼­ ¹®Á¦Ç®ÀÌ¿¡ ¾´´Ù
+//ë¬¸ì œì—ì„œ ì“°ì¸ ë‹¤ìµìŠ¤íŠ¸ë¼ ì•Œê³ ë¦¬ì¦˜
+//ê±°ë¦¬ ë¹„ë¡€ ì²´ë ¥ ì†Œëª¨ëŸ‰ì„ ê³ ë ¤í•´ì„œ ë¬¸ì œí’€ì´ì— ì“´ë‹¤
 void daik(int start, long long len[]) {
 	memset(visited, 0, sizeof(visited));
 	priority_queue<P, vector<P>, greater<P>> PQ;
@@ -74,8 +74,8 @@ int main() {
 		adj[e].push_back(P(len, s));
 	}
 
-	//´ÙÀÍ½ºÆ®¶ó¸¦ 2¹ø ÁøÇàÇÑ´Ù. °¢°¢ Áý¿¡¼­ Ãâ¹ßÇÒ ¶§¿Í µµÂøÁöÁ¡¿¡¼­ Ãâ¹ßÇÒ ¶§·Î ÁøÇàÇÑ´Ù
-	//¾ç¹æÇâÀ¸·Î ÀÌµ¿ÇÒ ¼ö ÀÖ´Â¸¸Å­ µµÂøÁöÁ¡¿¡¼­ Ãâ¹ßÁöÁ¡À¸·Î ÀÌµ¿ÇÒ ¶§µµ Ã£À¸¸é ÃÖ´Ü°Å¸®¸¦ Ã£À» ¼öµµ ÀÖ´Ù
+	//ë‹¤ìµìŠ¤íŠ¸ë¼ë¥¼ 2ë²ˆ ì§„í–‰í•œë‹¤. ê°ê° ì§‘ì—ì„œ ì¶œë°œí•  ë•Œì™€ ë„ì°©ì§€ì ì—ì„œ ì¶œë°œí•  ë•Œë¡œ ì§„í–‰í•œë‹¤
+	//ì–‘ë°©í–¥ìœ¼ë¡œ ì´ë™í•  ìˆ˜ ìžˆëŠ”ë§Œí¼ ë„ì°©ì§€ì ì—ì„œ ì¶œë°œì§€ì ìœ¼ë¡œ ì´ë™í•  ë•Œë„ ì°¾ìœ¼ë©´ ìµœë‹¨ê±°ë¦¬ë¥¼ ì°¾ì„ ìˆ˜ë„ ìžˆë‹¤
 	daik(1, Home_len);
 	daik(N, Camp_len);
 
