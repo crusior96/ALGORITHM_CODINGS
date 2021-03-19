@@ -1,8 +1,8 @@
 #include<iostream>
 using namespace std;
 int N;
-long long int time_checker[2002][2] = { 1 };	//time_checker[i][0] : Ãâ¼®, time_checker[i][1] : °á¼®
-long long int time_checker_non[2002] = { 0 };	//time_checker_non[i] : i¹øÂ° ³¯¿¡ Áö°¢ÇÔ
+long long int time_checker[2002][2] = { 1 };	//time_checker[i][0] : ì¶œì„, time_checker[i][1] : ê²°ì„
+long long int time_checker_non[2002] = { 0 };	//time_checker_non[i] : ië²ˆì§¸ ë‚ ì— ì§€ê°í•¨
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
@@ -12,8 +12,8 @@ int main() {
 	time_checker[1][1] = 1;
 	time_checker[2][0] = 2;
 	time_checker[2][1] = 2;
-	//Áö°¢À» ´Ü ÇÑ¹øµµ ÇÏÁö ¾ÊÀ» ¶§ÀÇ °æ¿ìÀÇ ¼öµéÀ» ±¸ÇÏ´Â ÀÛ¾÷. 
-	//ÀÌ¶§ °á¼®À» 3¹ø¿¬¼Ó ÇÏ¸é ¾È µÇ¹Ç·Î ·ÎÁ÷À» Àß Â¥¾ßÇÑ´Ù
+	//ì§€ê°ì„ ë‹¨ í•œë²ˆë„ í•˜ì§€ ì•Šì„ ë•Œì˜ ê²½ìš°ì˜ ìˆ˜ë“¤ì„ êµ¬í•˜ëŠ” ì‘ì—…. 
+	//ì´ë•Œ ê²°ì„ì„ 3ë²ˆì—°ì† í•˜ë©´ ì•ˆ ë˜ë¯€ë¡œ ë¡œì§ì„ ì˜ ì§œì•¼í•œë‹¤
 	for (int i = 3;i <= N;i++) {
 		time_checker[i][0] = time_checker[i - 1][0] + time_checker[i - 1][1];
 		time_checker[i][1] = time_checker[i - 1][0] + time_checker[i - 2][0];
@@ -26,14 +26,14 @@ int main() {
 		}
 	}
 
-	answer = time_checker[N][0] + time_checker[N][1];	//Áö°¢À» ´Ü ÇÑ¹øµµ ÇÏÁö ¾ÊÀº °æ¿ì°¡ ÃÖÃÊ·Î ÀúÀåµÈ´Ù
+	answer = time_checker[N][0] + time_checker[N][1];	//ì§€ê°ì„ ë‹¨ í•œë²ˆë„ í•˜ì§€ ì•Šì€ ê²½ìš°ê°€ ìµœì´ˆë¡œ ì €ì¥ëœë‹¤
 
 	if (answer >= 1000000) {
 		answer %= 1000000;
 	}
-	//ÀÌÁ¦ Áö°¢À» 1È¸¶óµµ ÇÏ´Â °æ¿ì¸¦ °í·ÁÇØ¼­ ÁøÇàÇÑ´Ù
-	//°æ¿ìÀÇ ¼ö´Â °¢°¢ i¸¦ ±âÁ¡À¸·Î (0~i) , (i~N)±îÁöÀÇ °æ¿ìÀÇ ¼öµéÀ» °¢°¢ °öÇØÁÖ´Â °ÍÀ» i¹øÂ° ³¯ÀÇ ÃÖÃÊ Áö°¢ ½ÃÁ¡À¸·Î Àâ´Â´Ù.
-	//ÇØ´ç °æ¿ìÀÇ ¼öµéÀ» °è¼Ó answer¿¡ ÀúÀåÇÑ ÈÄ Á¶°Ç¿¡ ¸Â°Ô ¹Ù²ãÁØ´Ù
+	//ì´ì œ ì§€ê°ì„ 1íšŒë¼ë„ í•˜ëŠ” ê²½ìš°ë¥¼ ê³ ë ¤í•´ì„œ ì§„í–‰í•œë‹¤
+	//ê²½ìš°ì˜ ìˆ˜ëŠ” ê°ê° ië¥¼ ê¸°ì ìœ¼ë¡œ (0~i) , (i~N)ê¹Œì§€ì˜ ê²½ìš°ì˜ ìˆ˜ë“¤ì„ ê°ê° ê³±í•´ì£¼ëŠ” ê²ƒì„ ië²ˆì§¸ ë‚ ì˜ ìµœì´ˆ ì§€ê° ì‹œì ìœ¼ë¡œ ì¡ëŠ”ë‹¤.
+	//í•´ë‹¹ ê²½ìš°ì˜ ìˆ˜ë“¤ì„ ê³„ì† answerì— ì €ì¥í•œ í›„ ì¡°ê±´ì— ë§ê²Œ ë°”ê¿”ì¤€ë‹¤
 	for (int i = 1;i <= N;i++) {
 		time_checker_non[i] = (time_checker[i - 1][0] + time_checker[i - 1][1]) * (time_checker[N - i][0] + time_checker[N - i][1]);
 		if (time_checker_non[i] >= 1000000) {
