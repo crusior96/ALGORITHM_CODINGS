@@ -2,15 +2,15 @@
 #include<algorithm>
 using namespace std;
 
-//pair ÄÁÅ×ÀÌ³Ê¿Í ±×°ÍÀ» ¿À¸§Â÷¼øÀ¸·Î Á¤·ÄÇØº¸¾Ò´Ù.
-//¿ø·¡´Â sort¸¸ ½áµµ °¡´ÉÇÏ´Ù°í Çß´Âµ¥ sort ÇÔ¼ö¿¡ compare ÇÔ¼ö¸¦ ³ÖÀ½À¸·Î½á È®½ÇÈ­Çß´Ù.
+//pair ì»¨í…Œì´ë„ˆì™€ ê·¸ê²ƒì„ ì˜¤ë¦„ì°¨ìˆœìœ¼ë¡œ ì •ë ¬í•´ë³´ì•˜ë‹¤.
+//ì›ëž˜ëŠ” sortë§Œ ì¨ë„ ê°€ëŠ¥í•˜ë‹¤ê³  í–ˆëŠ”ë° sort í•¨ìˆ˜ì— compare í•¨ìˆ˜ë¥¼ ë„£ìŒìœ¼ë¡œì¨ í™•ì‹¤í™”í–ˆë‹¤.
 
 
 bool compare(const pair<int, int> &a, const pair<int, int>&b)
 {
-	//¹®Á¦»ó¿¡¼­ Ã¹ ¹øÂ° ÁÂÇ¥¸¦ ±âÁØÀ¸·Î Á¤·ÄÇÑ ÈÄ
-	//±× ÁÂÇ¥°ªÀÌ µ¿ÀÏÇÑ ÁÂÇ¥µé³¢¸®´Â µÎ ¹øÂ° ÁÂÇ¥¸¦ ±âÁØÀ¸·Î Á¤·ÄÇÏ±â¿¡
-	//1Â÷ÀûÀ¸·Î Ã¹ ¹ø¤Š °ª, ±× ´ÙÀ½ µÎ ¹øÂ° °ªÀ» ±âÁØÀ¸·Î Á¤·ÄÇÑ´Ù.
+	//ë¬¸ì œìƒì—ì„œ ì²« ë²ˆì§¸ ì¢Œí‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬í•œ í›„
+	//ê·¸ ì¢Œí‘œê°’ì´ ë™ì¼í•œ ì¢Œí‘œë“¤ë¼ë¦¬ëŠ” ë‘ ë²ˆì§¸ ì¢Œí‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬í•˜ê¸°ì—
+	//1ì°¨ì ìœ¼ë¡œ ì²« ë²ˆÂŠ ê°’, ê·¸ ë‹¤ìŒ ë‘ ë²ˆì§¸ ê°’ì„ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬í•œë‹¤.
 	if (a.first == b.first)
 	{
 		return a.second < b.second;
