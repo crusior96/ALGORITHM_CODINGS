@@ -6,13 +6,13 @@ using namespace std;
 int maps[52][52] = {};
 int M, N;
 int answer;
-bool selected_chicken[14];		//Ä¡Å²°Å¸®¸¦ Àê ¶§, ¼±ÅÃµÈ Ä¡Å²ÁýÀÎÁö ¾Æ´ÑÁö¿¡ ´ëÇÑ Á¤º¸°¡ µé¾î°¡ÀÖ´Ù
+bool selected_chicken[14];		//ì¹˜í‚¨ê±°ë¦¬ë¥¼ ìž´ ë•Œ, ì„ íƒëœ ì¹˜í‚¨ì§‘ì¸ì§€ ì•„ë‹Œì§€ì— ëŒ€í•œ ì •ë³´ê°€ ë“¤ì–´ê°€ìžˆë‹¤
 
-//N * N°³ÀÇ °ø°£¿¡ M°³ ÀÌ»óÀÇ Ä¡Å²ÁýÀÌ ÀÖ´Ù°í °¡Á¤ÇÏÀÚ
-//°¢°¢ÀÇ °ø°£°ªµéÀº 0 = ºó°ø°£ / 1 = Áý / 2 = Ä¡Å²ÁýÀ» ÀÇ¹ÌÇÑ´Ù
-//ÀÌ¶§ 'Ä¡Å²°Å¸®'¶õ, °¢°¢ÀÇ Áý¿¡¼­ ÃÖ´Ü°Å¸®·Î µµ´ÞÇÒ ¼ö ÀÖ´Â Ä¡Å²Áý±îÁöÀÇ °Å¸®¸¦ ÀÇ¹ÌÇÏ¸ç
-//±× °Å¸®´Â Ä¡Å²Áý°ú Áý »çÀÌÀÇ ¸ÇÇØÆ° °Å¸®¸¦ ÀÇ¹ÌÇÑ´Ù
-//M°³ÀÇ Ä¡Å²Áý¸¸À» ¿î¿µÇÒ ¼ö ÀÖ´Ù°í °¡Á¤ÇÒ ¶§, ¾òÀ» ¼ö ÀÖ´Â ÃÖ´Ü Ä¡Å²°Å¸®¸¦ ±¸ÇÏ¿©¶ó
+//N * Nê°œì˜ ê³µê°„ì— Mê°œ ì´ìƒì˜ ì¹˜í‚¨ì§‘ì´ ìžˆë‹¤ê³  ê°€ì •í•˜ìž
+//ê°ê°ì˜ ê³µê°„ê°’ë“¤ì€ 0 = ë¹ˆê³µê°„ / 1 = ì§‘ / 2 = ì¹˜í‚¨ì§‘ì„ ì˜ë¯¸í•œë‹¤
+//ì´ë•Œ 'ì¹˜í‚¨ê±°ë¦¬'ëž€, ê°ê°ì˜ ì§‘ì—ì„œ ìµœë‹¨ê±°ë¦¬ë¡œ ë„ë‹¬í•  ìˆ˜ ìžˆëŠ” ì¹˜í‚¨ì§‘ê¹Œì§€ì˜ ê±°ë¦¬ë¥¼ ì˜ë¯¸í•˜ë©°
+//ê·¸ ê±°ë¦¬ëŠ” ì¹˜í‚¨ì§‘ê³¼ ì§‘ ì‚¬ì´ì˜ ë§¨í•´íŠ¼ ê±°ë¦¬ë¥¼ ì˜ë¯¸í•œë‹¤
+//Mê°œì˜ ì¹˜í‚¨ì§‘ë§Œì„ ìš´ì˜í•  ìˆ˜ ìžˆë‹¤ê³  ê°€ì •í•  ë•Œ, ì–»ì„ ìˆ˜ ìžˆëŠ” ìµœë‹¨ ì¹˜í‚¨ê±°ë¦¬ë¥¼ êµ¬í•˜ì—¬ë¼
 
 struct house {
 	int h_idx;
@@ -24,15 +24,15 @@ struct chicken{
 	int c_idy;
 };
 
-//°¢°¢ Áý°ú Ä¡Å²ÁýÀÇ À§Ä¡¿¡ ´ëÇÑ Á¤º¸µéÀ» ÀúÀåÇÑ º¤ÅÍ
+//ê°ê° ì§‘ê³¼ ì¹˜í‚¨ì§‘ì˜ ìœ„ì¹˜ì— ëŒ€í•œ ì •ë³´ë“¤ì„ ì €ìž¥í•œ ë²¡í„°
 vector<house>houselist;
 vector<chicken>chickenlist;
 
-//DFS¸¦ »ç¿ëÇÏ¿© Ä¡Å²°Å¸®¸¦ ±¸ÇÒ ¿¹Á¤. idx´Â ¼±ÅÃµÉ or ¼±ÅÃÇÏÁö ¾Ê°í ³Ñ±æ Ä¡Å²Áý ¹è¿­ÀÇ À§Ä¡, selÀº ÇöÀç±îÁö ¼±ÅÃµÈ Ä¡Å²ÁýÀÇ °¹¼öÀÌ´Ù
-//chickenlist[idx]ÀÇ Ä¡Å²ÁýÀ» Æó¾÷ÇÏÁö ¾Ê´Â´Ù¸é selected_chicken°ªÀ» false, ¾Æ´Ï¸é true·Î ÀúÀåÇØµÐ Ã¤ ÁøÇàÇÑ´Ù
+//DFSë¥¼ ì‚¬ìš©í•˜ì—¬ ì¹˜í‚¨ê±°ë¦¬ë¥¼ êµ¬í•  ì˜ˆì •. idxëŠ” ì„ íƒë  or ì„ íƒí•˜ì§€ ì•Šê³  ë„˜ê¸¸ ì¹˜í‚¨ì§‘ ë°°ì—´ì˜ ìœ„ì¹˜, selì€ í˜„ìž¬ê¹Œì§€ ì„ íƒëœ ì¹˜í‚¨ì§‘ì˜ ê°¯ìˆ˜ì´ë‹¤
+//chickenlist[idx]ì˜ ì¹˜í‚¨ì§‘ì„ íì—…í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ selected_chickenê°’ì„ false, ì•„ë‹ˆë©´ trueë¡œ ì €ìž¥í•´ë‘” ì±„ ì§„í–‰í•œë‹¤
 void dfs(int idx, int sel) {
-	//sel °ªÀÌ M°ú °°¾ÆÁ³À»¶§, ¼±ÅÃµÈ Ä¡Å²ÁýµéÀ» ±â¹ÝÀ¸·Î Ä¡Å²°Å¸®¸¦ Àé´Ù
-	//°¢°¢ ÁýµéÀÇ À§Ä¡¿Í ¼±ÅÃµÈ Ä¡Å²Áý »çÀÌÀÇ ¸ÇÇØÆ° °Å¸®¸¦ Á¾ÇÕÇÏ¿© Ä¡Å²°Å¸®¸¦ ¸ðÀº´Ù
+	//sel ê°’ì´ Mê³¼ ê°™ì•„ì¡Œì„ë•Œ, ì„ íƒëœ ì¹˜í‚¨ì§‘ë“¤ì„ ê¸°ë°˜ìœ¼ë¡œ ì¹˜í‚¨ê±°ë¦¬ë¥¼ ìž°ë‹¤
+	//ê°ê° ì§‘ë“¤ì˜ ìœ„ì¹˜ì™€ ì„ íƒëœ ì¹˜í‚¨ì§‘ ì‚¬ì´ì˜ ë§¨í•´íŠ¼ ê±°ë¦¬ë¥¼ ì¢…í•©í•˜ì—¬ ì¹˜í‚¨ê±°ë¦¬ë¥¼ ëª¨ì€ë‹¤
 	if (sel == M) {
 		int temp_answer = 0;
 		for (int i = 0;i < houselist.size();i++) {
@@ -49,7 +49,7 @@ void dfs(int idx, int sel) {
 		return;
 	}
 
-	//¸¸¾à idx°ªÀÌ Ä¡Å²Áý °¹¼ö¿Í °°Àº »óÈ²ÀÌ¶ó¸é Á¾·áÇÑ´Ù
+	//ë§Œì•½ idxê°’ì´ ì¹˜í‚¨ì§‘ ê°¯ìˆ˜ì™€ ê°™ì€ ìƒí™©ì´ë¼ë©´ ì¢…ë£Œí•œë‹¤
 	if (idx == chickenlist.size()) {
 		return;
 	}
